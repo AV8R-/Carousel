@@ -34,21 +34,43 @@ extension CarouselLayout {
             let offset = contentOffset(forCellWithFrame: finalFrameForCell(atIndexPath: path)) else {
                 return super.targetContentOffset(forProposedContentOffset: proposedContentOffset)
         }
-
+        
         //MARK: - Проверить в UGT HD будет ли работать.
         return offset
     }
     
     override open func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        let path: IndexPath = {
+            if velocity.x > 0 {
+                let offset = CGPoint(x: self.collectionView!.contentOffset.x + velocity.x * velocity.x, y: self.collectionView!.contentOffset.y)
+                if let path = indexPathNearestToPoint?(offset) {
+                    setIndexPathInCenter?(IndexPath(item: path.item + 1, section: 0))
+                    return path
+                }
+            } else if velocity.x < 0 {
+                let offset = CGPoint(x: self.collectionView!.contentOffset.x - velocity.x * velocity.x, y: self.collectionView!.contentOffset.y)
+                if let path = indexPathNearestToPoint?(offset) {
+                    setIndexPathInCenter?(IndexPath(item: path.item - 1, section: 0))
+                    return path
+                }
+            } else {
+                if let path = indexPathNearestToPoint?(proposedContentOffset) {
+                    setIndexPathInCenter?(path)
+                    return path
+                }
+            }
+            return IndexPath(item: 0, section: 0)
+        }()
+        
         let attributes = collectionView!.layoutAttributesForItem(at: getIndexPathInCenter!()!)
         let cellRect = attributes!.frame
         let targetX = cellRect.origin.x + cellRect.size.width / 2 - collectionView!.frame.size.width / 2
         return CGPoint(x: targetX, y: 0)
+        
     }
     
     func contentOffset(forCellWithFrame frame: CGRect) -> CGPoint? {
-        if let cv = collectionView
-        {
+        if let cv = collectionView {
             return CGPoint(x: frame.origin.x + (frame.size.width - cv.frame.size.width)/2, y: 0)
         } else {
             return nil
@@ -92,7 +114,7 @@ extension CarouselLayout {
     
     func frameForCell(atIndexPath path: IndexPath, forContainerSize containerSize: CGSize) -> CGRect {
         let size = Carousel.itemSize(forContainerSize: containerSize)
-        return CGRect(x: CGFloat((path as NSIndexPath).item) * (size.width + ((delegate?.interItemSpace(forCollectionViewSize: containerSize)) ?? 0)),
+        return CGRect(x: CGFloat(path.item) * (size.width + ((delegate?.interItemSpace(forCollectionViewSize: containerSize)) ?? 0)),
                       y: containerSize.height * ((1 - (Carousel.relativeHeightForCell )) / 2),
                       width: size.width,
                       height: size.height)

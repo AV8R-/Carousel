@@ -9,12 +9,13 @@ import Foundation
 public typealias ImageLoadHandler = (URL, @escaping (UIImage)->Void) -> Void
 
 //DataSource для элемента коллекции
+@objc
 public protocol CarouselItemDataSource {
     init(pack: CarouselItemProtocol)
 }
 
 //DataSource для ячейки карусели
-open class CarouselCellDataSource {
+open class CarouselCellDataSource: NSObject {
     var imageUrl: String?
     /**
      * Замыкание, которое скачивает картинки

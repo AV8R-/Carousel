@@ -26,7 +26,7 @@ private class CarouselScroller {
     //MARK: - Instance types
     
     enum CollectionConstants {
-        static let cellReuseIdentifier = "CollectionCell"
+        static let cellReuseIdentifier = "CarouselCell"
         static let cellWidth: CGFloat = 350
         static let cellHeight: CGFloat = 250
     }
@@ -59,7 +59,7 @@ private class CarouselScroller {
     
     /*
      * Сколько должно быть дубликатов ячеек
-     * При количестве 30 и более, анимация поворота ориентации расшатывается пропорционально величине этой цифры
+     * При количестве 30 и более, анимация поворота ориентации разъёбывается пропорционально величине этой цифры
      */
     fileprivate var elementsToDuplicate = 20
     fileprivate var currentIP: IndexPath?
@@ -78,7 +78,7 @@ private class CarouselScroller {
     fileprivate var actualItemsCount: Int {
         let count = dataSource.itemsCount
         if count <= 0 {
-                return 0
+            return 0
         }
         
         return count + elementsToDuplicate * 2
@@ -118,7 +118,7 @@ private class CarouselScroller {
     
     override open func viewDidLoad() {
         collectionView!.register(
-            UINib(nibName: "CollectionCell", bundle:  Bundle(for: Carousel.self)),
+            UINib(nibName: "CarouselCell", bundle: Bundle(for: Carousel.self)),
             forCellWithReuseIdentifier: CollectionConstants.cellReuseIdentifier
         )
         
@@ -196,14 +196,14 @@ private class CarouselScroller {
         carouselLayout?.transitioningOriginItemSize = view.bounds.size
         carouselLayout?.transitioningTargetItemSize = size
         super.viewWillTransition(to: size,
-                                       with: coordinator)
+                                 with: coordinator)
         
         coordinator.animate(alongsideTransition: { [weak self] context in
             self?.collectionView?.performBatchUpdates({ _ in self?.collectionView?.setCollectionViewLayout(self!.collectionView!.collectionViewLayout, animated: true)}) { _ in }
             }, completion: { [weak self] _ in
                 //            _ = self?.currentIndexPathInCenter.map { self?.collectionView?.scrollToItemAtIndexPath($0, atScrollPosition: .CenteredHorizontally, animated: false) }
                 self?.createNewTimer()
-            })
+        })
     }
     
     open func indexPath(nearestToPoint point: CGPoint) -> IndexPath? {
@@ -226,7 +226,7 @@ private class CarouselScroller {
         if (indexPath as NSIndexPath).item < elementsToDuplicate { //Левые дубликаты
             originalItem = (dataSource.itemsCount - 1) - (elementsToDuplicate - 1 - (indexPath as NSIndexPath).item) % dataSource.itemsCount
         } else if (indexPath as NSIndexPath).item >= actualItemsCount - elementsToDuplicate { //Правые дубликаты
-            originalItem = (indexPath.item - (actualItemsCount - elementsToDuplicate)) % dataSource.itemsCount
+            originalItem = ((indexPath as NSIndexPath).item - (actualItemsCount - elementsToDuplicate)) % dataSource.itemsCount
         } else { //Оригинальные ячейки
             originalItem = (indexPath as NSIndexPath).item - elementsToDuplicate
         }
@@ -265,7 +265,7 @@ private class CarouselScroller {
         let width = height * 2
         return CGSize(width: width, height: height)
     }
-
+    
     class var relativeHeightForCell: CGFloat {
         return UIDevice().userInterfaceIdiom == .pad ? 0.84 : 1
     }
@@ -339,7 +339,7 @@ extension Carousel {
     func swapCellsIfNeeded() {
         guard let currentIndexPathInCenter = currentIndexPathInCenter else { return }
         if (currentIndexPathInCenter as NSIndexPath).item < elementsToDuplicate {
-            let originalItem = elementsToDuplicate + (dataSource.itemsCount - 1) - (elementsToDuplicate - 1 - currentIndexPathInCenter.item) % dataSource.itemsCount
+            let originalItem = elementsToDuplicate + (dataSource.itemsCount - 1) - (elementsToDuplicate - 1 - (currentIndexPathInCenter as NSIndexPath).item) % dataSource.itemsCount
             self.currentIndexPathInCenter = IndexPath(item: originalItem, section: 0)
             collectionView!.scrollToItem(at: self.currentIndexPathInCenter!, at: .centeredHorizontally, animated: false)
         } else if (currentIndexPathInCenter as NSIndexPath).item >= actualItemsCount - elementsToDuplicate {
@@ -347,7 +347,6 @@ extension Carousel {
             self.currentIndexPathInCenter = IndexPath(item: originalItem, section: 0)
             collectionView!.scrollToItem(at: self.currentIndexPathInCenter!, at: .centeredHorizontally, animated: false)
         }
-        
     }
 }
 
