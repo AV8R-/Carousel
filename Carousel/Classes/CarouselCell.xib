@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionCell" id="qdf-vQ-2dd" customClass="CarouselCell" customModule="Carousel" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X8F-Og-Cw1">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I19-2b-4d3" customClass="UIVisualEffectView">
+                        <rect key="frame" x="0.0" y="270" width="300" height="30"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="6dd-Pa-MB2"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="I19-2b-4d3" secondAttribute="bottom" id="KJI-Gi-Qwg"/>
+                <constraint firstAttribute="trailing" secondItem="I19-2b-4d3" secondAttribute="trailing" id="LF6-wZ-Yga"/>
+                <constraint firstAttribute="trailing" secondItem="X8F-Og-Cw1" secondAttribute="trailing" id="bVU-QT-9nv"/>
+                <constraint firstItem="I19-2b-4d3" firstAttribute="leading" secondItem="qdf-vQ-2dd" secondAttribute="leading" id="bVt-4Y-m3j"/>
+                <constraint firstAttribute="bottom" secondItem="X8F-Og-Cw1" secondAttribute="bottom" id="jNr-nR-vfv"/>
+                <constraint firstItem="X8F-Og-Cw1" firstAttribute="leading" secondItem="qdf-vQ-2dd" secondAttribute="leading" id="mbx-io-6Fj"/>
+                <constraint firstItem="X8F-Og-Cw1" firstAttribute="top" secondItem="qdf-vQ-2dd" secondAttribute="top" id="zDp-JQ-GkZ"/>
+            </constraints>
+            <connections>
+                <outlet property="backgroundImage" destination="X8F-Og-Cw1" id="h17-1d-DmQ"/>
+                <outlet property="descriptionContainer" destination="I19-2b-4d3" id="QRw-SM-HBt"/>
+            </connections>
+            <point key="canvasLocation" x="351" y="322"/>
+        </collectionViewCell>
+    </objects>
+</document>
